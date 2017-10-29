@@ -2,35 +2,60 @@
 session_start();
 require './db.php';
 require_once 'CosineSimilarity.php';
+$_SESSION['score']=array();
 $cmd = $_GET['cmd'];
 
 
 switch ($cmd) {
 	case 'cosine':
-	    $keyword = $_POST['txtKeyword'];
+		require './vendor/autoload.php';
+
+		$sentence = $_POST['keyword'];
+
+		$tokenizerFactory = new \Sastrawi\Tokenizer\TokenizerFactory();
+		$tokenizer = $tokenizerFactory->createDefaultTokenizer();
+
+		$tokens = $tokenizer->tokenize($sentence);
+
+		$count = array_count_values($tokens);
+		    
+
+	    $keyword = $_POST['keyword'];
 	    $metode = $_POST['uMeotde'];
 
 	    if($metode=='Cosine'){
 	    	$rows = [];
-	    	$sql = "SELECT tweet_clean FROM tweet";
+	    	$sql = "SELECT * FROM tweet";
        		$tweet_clean = mysqli_query($link, $sql);
 			while($row = mysqli_fetch_array($tweet_clean))
 			{
-			    $rows = $row['tweet_clean'];
-			    echo $rows."</br>";
-			}
-	    	$v1 = array('php' => 5, 'web' => 2,  'google' => 1);
-			$v2 = array('php' => 0, 'web' => 5,  'google' => 10);
+				$v1 = array();
+				foreach (array_unique($tokens) as $key => $value) {
+			    	/*$v1 = array_push($v1, );*/
+			    	//echo $value." : ".$count[$value]."</br>";
+			    	$v1[$value] = $count[$value];
+				}
+		    	$tokens1 = $tokenizer->tokenize($row['tweet_clean']);
 
-			$cs = new CosineSimilarity();
+				$count1 = array_count_values($tokens1);
+				foreach (array_unique($tokens1) as $key => $values) {
+			    	$v2[$values] = $count1[$values];
+				}
+			
+				$cs = new CosineSimilarity();
 
-			$result1 = $cs->similarity($v1,$v2); // similarity of 1 and 2
-			var_dump($result1); // #=> float(0.32659863237109)
-	    	// echo "Cosine";
+				$result1 = $cs->similarity($v1,$v2);
+				//echo $result1."</br>";
+
+				$_SESSION['score'][$row['tweet_id']]=$result1;
+	    	}
+	    	arsort($_SESSION['score']);
+	    	var_dump($_SESSION['score']);
 	    }
 	    else if($metode=='Manhattan'){
 	    	echo "Manhattan";
 	    }
+				
     break;
 
     default:
