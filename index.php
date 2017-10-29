@@ -1,4 +1,7 @@
 <html>
+<?php 
+session_start();
+?>
     <head>
         <meta charset="UTF-8">
         <title></title>
@@ -44,12 +47,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>nama user</td>
-                            <td>isi twiit</td>
-                            <td>tanggal twiit</td>
-                            <td>99</td>
-                        </tr>
+                        <?php 
+                        require 'db.php';
+                            foreach ($_SESSION['score'] as $key => $value) {
+                                $query = "SELECT * FROM tweet WHERE tweet_id  = $key";
+                                $tweet_clean = mysqli_query($link, $query);
+                                while($row = mysqli_fetch_array($tweet_clean))
+                                {?>
+                                     <tr>
+                                        <td><?php echo $row['tweet_user']; ?></td>
+                                        <td><?php echo $row['tweet_clean']; ?></td>
+                                        <td><?php echo $row['tweet_date']; ?></td>
+                                        <td><?php echo $value; ?></td>
+                                    </tr>
+                                <?php }
+                            }
+                        ?>
+                       
                     </tbody>
                 </table>
             </div>
