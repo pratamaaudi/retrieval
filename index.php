@@ -1,3 +1,7 @@
+<?php
+require_once 'CosineSimilarity.php';
+?>
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -8,16 +12,17 @@
         <script src="bootstrap/js/bootstrap.min.js"></script>
     </head>
     <body>
+        <form action="proses.php?cmd=cosine" method="POST">
         <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-8 form-control">
                 <div class="row">
                     <div class="col-sm-2"><span style="float: right">Keyword :</span> </div>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" style="width: 100%"/>
+                        <input class="form-control" type="text" name="txtKeyword" style="width: 100%"/>
                     </div>
                     <div class="col-sm-4">
-                        <select class="form-control" id="sel1">
+                        <select class="form-control" id="sel1" name="uMeotde">
                             <option>Manhattan</option>
                             <option>Cosine</option>
                         </select>
@@ -53,5 +58,6 @@
             </div>
             <div class="col-sm-2"></div>
         </div>
+        </form>
     </body>
 </html>
