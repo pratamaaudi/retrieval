@@ -10,22 +10,25 @@
     <body>
         <div class="row">
             <div class="col-sm-2"></div>
+
             <div class="col-sm-8 form-control">
-                <div class="row">
-                    <div class="col-sm-2"><span style="float: right">Keyword :</span> </div>
-                    <div class="col-sm-4">
-                        <input class="form-control" type="text" style="width: 100%"/>
+                <form action="brain.php" method="POST">
+                    <div class="row">
+                        <div class="col-sm-2"><span style="float: right">Keyword :</span> </div>
+                        <div class="col-sm-4">
+                            <input class="form-control" type="text" name="keyword" style="width: 100%"/>
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="sel1">
+                                <option>Manhattan</option>
+                                <option>Cosine</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn" style="width: 100%">Search</button>
+                        </div>
                     </div>
-                    <div class="col-sm-4">
-                        <select class="form-control" id="sel1">
-                            <option>Manhattan</option>
-                            <option>Cosine</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-2">
-                        <button class="btn" style="width: 100%">Search</button>
-                    </div>
-                </div>
+                </form>
             </div>
             <div class="col-sm-2"></div>
         </div>
