@@ -6,7 +6,7 @@ $query = "SELECT * FROM tweet";
 $result = mysqli_query($link, $query);
 $tweet_clean = array();
 
-while ($row = mysqli_fetch_array($result)) {
+/*while ($row = mysqli_fetch_array($result)) {
     $tweet_clean[$row['tweet_id']] = $row['tweet_clean'];
 }
 
@@ -45,8 +45,8 @@ foreach ($tweet_clean as $key => $value) {
             $arrayKata[$value2] = 1;
         }
     }
-}
-ksort($arrayKata);
+}*/
+/*ksort($arrayKata);
 if (isset($debug)) {
     echo '<br> kamus kata : <br>';
     ?><pre><?php
@@ -69,9 +69,9 @@ foreach ($arrayKata as $key => $value) {
                 } else {
                     $arrayTabelData[$key][$key2] = 1;
                 }
-            } /*else {
+            } else {
                 $arrayTabelData[$key][$key2] = 0;
-            }*/
+            }
         }
     }
 }
@@ -86,7 +86,7 @@ if (isset($debug)) {
     ?><pre><?php
             print_r($arrayTabelData);
             ?></pre><?php
-}
+}*/
 ?>
 
 <?php
@@ -97,30 +97,35 @@ if (isset($debug)) {
     while ($row = mysqli_fetch_array($res)) {
         $totalDoc=$row['FG'];
     }
+    echo $totalDoc;
 
-    $raw = "SELECT * FROM tabel_tahap1";
+    $raw = "SELECT kata, COUNT(idTweet) as totalTweet, jumlah FROM `tabel_tahap1` GROUP BY kata";
     $res2= mysqli_query($link2, $raw);
     $tfidf;
     $tfRaw;
     while ($row = mysqli_fetch_array($res2)) {
         $tfRaw=$row['jumlah'];
-        // echo "</br> Total Doc : ".$totalDoc.'</br>';
+        //echo "</br> Total Doc : ".$totalDoc.'</br>';
         // echo "</br> TF Raw : ".$tfRaw. '</br>';
         // echo "</br> DFT : ".$arrayHitungKata[$row['kata']]. '</br>';
-        // $tfidf = $tfRaw * log( $totalDoc / $arrayHitungKata[$row['kata']]);
+        
 
-        // $idf=log( $totalDoc / $arrayHitungKata[$row['kata']]);
-        // $kata=$row['kata'];
+        // $tfidf = $tfRaw * log( $totalDoc / $row['totalTweet']);
 
-            // $sql = "INSERT INTO idf (nama, idf) VALUES ('$kata','$idf')";
-            // $result = mysqli_query($link3, $sql);
-            // if(!$result){
-            //     echo $sql;
-            // }
+        $idf=log( $totalDoc / $row['totalTweet']);
+        $kata=$row['kata'];
+
+            $sql = "INSERT INTO idf (nama, idf) VALUES ('$kata','$idf')";
+            $result = mysqli_query($link3, $sql);
+            if(!$result){
+                echo $sql;
+            }
             // echo "</br> TFIDF ". $row['kata'].' '.$tfidf.' </br>';
     }
 
-    $count = "SELECT * FROM idf tf INNER JOIN tabel_tahap1 th on tf.nama = th.kata";
+    $count = "SELECT * 
+              FROM idf tf INNER JOIN tabel_tahap1 th 
+                on tf.nama = th.kata";
     $resti = mysqli_query($link2, $count);
 
     while ($row = mysqli_fetch_array($resti)) {
