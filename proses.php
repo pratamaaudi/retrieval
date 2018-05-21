@@ -60,7 +60,7 @@ switch ($cmd) {
                     $_SESSION['score'][$row['tweet_id']] = 0;
                 } else {
 
-                    $result1 = cosine($v1, $v2);
+                    $result1 = similarity($v1, $v2);
 
                     $_SESSION['score'][$row['tweet_id']] = $result1;
                 }
@@ -95,7 +95,8 @@ switch ($cmd) {
 
                 foreach ($v1 as $key => $values) {
                     $query2 = "select * from tfidf WHERE kata='" . $key . "' AND id=" . $row['tweet_id'];
-                    echo $query2;
+                    
+                    echo $key;
                     $queryHasilV2 = mysqli_query($link2, $query2);
                     $v2[$key] = 0;
                     while ($row2 = mysqli_fetch_array($queryHasilV2)) {

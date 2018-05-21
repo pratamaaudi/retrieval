@@ -49,6 +49,7 @@ session_start();
                     <tbody>
                         <?php 
                         require 'db.php';
+                            if(isset($_SESSION['score'])) {
                             foreach ($_SESSION['score'] as $key => $value) {
                                 $query = "SELECT * FROM tweet WHERE tweet_id  = $key";
                                 $tweet_clean = mysqli_query($link, $query);
@@ -62,6 +63,7 @@ session_start();
                                     </tr>
                                 <?php }
                             }
+                        }
                         ?>
                        
                     </tbody>
